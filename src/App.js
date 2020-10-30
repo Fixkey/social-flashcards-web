@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { Component } from "react";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import "./App.css";
+import { DeckDetails } from "./Decks/DeckDetails/DeckDetails";
+import { Decks } from "./Decks/Decks";
+import { HeaderMenu } from "./Shared/HeaderMenu";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  // eslint-disable-next-line no-useless-constructor
+  constructor() {
+    super();
+    // ... load config
+  }
+
+  render() {
+    return (
+      <Router>
+        <HeaderMenu />
+        <div className="App">
+          <Switch>
+            <Route exact path="/">
+              Hi
+            </Route>
+            <Route exact path="/decks">
+              <Decks />
+            </Route>
+            <Route exact path="/decks/:id">
+              <DeckDetails />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;
