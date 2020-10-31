@@ -9,3 +9,16 @@
 .add-card-cell {
   width: 90%;
 }
+
+.edit-card {
+  display: flex;
+  justify-content: center;
+}
+
+.m-05 {
+  margin: 0.5em !important;
+}
+
+.text-align-center {
+  text-align: center;
+}

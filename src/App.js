@@ -24,7 +24,7 @@ class App extends Component {
             <Route exact path="/decks">
               <Decks />
             </Route>
-            <Route exact path="/decks/:id">
+            <Route path="/decks/:permaLink">
               <DeckDetails />
             </Route>
           </Switch>

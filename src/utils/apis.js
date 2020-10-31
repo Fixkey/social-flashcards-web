@@ -13,3 +13,18 @@ export const loadDeckByPermaLink = async (permaLink) => {
   console.log(deck);
   return deck;
 };
+
+export const deleteCard = async (deckId, cardId) => {
+  const response = await fetch(`${API_URL}/deck/${deckId}/card/${cardId}`, {
+    method: "delete",
+  });
+  return response.ok;
+};
+
+export const editCard = async (deckId, card) => {
+  return { card: null, error: null };
+  // const response = await fetch(`${API_URL}/deck/${deckId}/card/${cardId}`, {
+  //   method: "put",
+  // });
+  // return response;
+};
