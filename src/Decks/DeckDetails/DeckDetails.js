@@ -8,7 +8,13 @@ import {
 } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Header, Icon, Loader } from "semantic-ui-react";
-import { deleteCard, editCard, loadDeckByPermaLink } from "../../utils/apis";
+import {
+  createCard,
+  deleteCard,
+  editCard,
+  loadDeckByPermaLink,
+} from "../../utils/apis";
+import { UPDATED_SUCCESSFULLY } from "../../utils/strings";
 import { CardTable } from "./CardTable";
 import { EditCard } from "./EditCard";
 
@@ -17,7 +23,6 @@ export function DeckDetails() {
     deck,
     handleDelete,
     selectedCard,
-    setSelectedCard,
     handleEdit,
     path,
     updateCard,
@@ -38,7 +43,7 @@ export function DeckDetails() {
           onEdit={handleEdit}
         />
       </Route>
-      <Route paath={`${path}/edit`}>
+      <Route path={`${path}/edit`}>
         <EditCard
           deck={deck}
           selectedCard={selectedCard}
@@ -90,24 +95,43 @@ function useHooks() {
 
   const updateCard = useCallback(
     (newFront, newBack) => {
-      console.log(selectedCard);
-      editCard(deck.id, {
-        ...selectedCard,
-        front: newFront,
-        back: newBack,
-      }).then(({ card, error }) => {
-        // error
-        refreshDeck(permaLink);
-      });
+      if (!selectedCard) {
+        createCard(deck.id, {
+          front: newFront,
+          back: newBack,
+        }).then(({ deck: newDeck, error }) => {
+          // error
+          if (!error) {
+            setDeck(newDeck);
+            toast.success("CREATED");
+            setSelectedCard(newDeck.cards[newDeck.cards.length - 1]);
+          } else {
+            toast.error(error);
+          }
+        });
+      } else {
+        editCard(deck.id, {
+          ...selectedCard,
+          front: newFront,
+          back: newBack,
+        }).then(({ deck: newDeck, error }) => {
+          // error
+          if (!error) {
+            setDeck(newDeck);
+            toast.success(UPDATED_SUCCESSFULLY);
+          } else {
+            toast.error(error);
+          }
+        });
+      }
     },
-    [selectedCard, permaLink, deck, refreshDeck]
+    [selectedCard, deck]
   );
 
   return {
     deck,
     handleDelete,
     selectedCard,
-    setSelectedCard,
     handleEdit,
     path,
     updateCard,

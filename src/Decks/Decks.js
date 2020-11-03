@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Loader } from "semantic-ui-react";
 import { loadAllDecks } from "../utils/apis";
 import { DeckList } from "./DeckList";
 
@@ -10,5 +11,11 @@ export function Decks() {
     });
   }, []);
 
-  return <div>{decks === null ? "Loading" : <DeckList decks={decks} />}</div>;
+  if (!decks) return <Loader active inline="centered" />;
+
+  return (
+    <div>
+      <DeckList decks={decks} />
+    </div>
+  );
 }

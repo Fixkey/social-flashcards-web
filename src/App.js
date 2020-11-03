@@ -4,6 +4,7 @@ import "./App.css";
 import { DeckDetails } from "./Decks/DeckDetails/DeckDetails";
 import { Decks } from "./Decks/Decks";
 import { HeaderMenu } from "./Shared/HeaderMenu";
+import { ReviewMain } from "./Shared/ReviewMain";
 
 class App extends Component {
   // eslint-disable-next-line no-useless-constructor
@@ -20,6 +21,9 @@ class App extends Component {
           <Switch>
             <Route exact path="/">
               Hi
+            </Route>
+            <Route exact path="/review">
+              <ReviewMain />
             </Route>
             <Route exact path="/decks">
               <Decks />

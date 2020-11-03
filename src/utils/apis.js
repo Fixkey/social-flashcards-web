@@ -21,10 +21,39 @@ export const deleteCard = async (deckId, cardId) => {
   return response.ok;
 };
 
+export const createCard = async (deckId, card) => {
+  const response = await fetch(`${API_URL}/deck/${deckId}/card`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(card),
+  });
+  if (response.ok) {
+    return {
+      deck: await response.json(),
+      error: null,
+    };
+  }
+  return { error: true };
+};
+
 export const editCard = async (deckId, card) => {
-  return { card: null, error: null };
-  // const response = await fetch(`${API_URL}/deck/${deckId}/card/${cardId}`, {
-  //   method: "put",
-  // });
-  // return response;
+  console.log(deckId);
+  console.log(card);
+  const response = await fetch(`${API_URL}/deck/${deckId}/card`, {
+    method: "put",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(card),
+  });
+  if (response.ok) {
+    return {
+      deck: await response.json(),
+      error: null,
+    };
+  }
+  const json = await response.json();
+  return { error: json.message };
 };

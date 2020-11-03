@@ -14,11 +14,7 @@ export function CardTable({ cards, onEdit, onDelete }) {
 
       <Table.Body>
         {cards.map((card) => (
-          <Table.Row
-            key={card.id}
-            // onClick={() => console.log(card.id)}
-            // className="hover-pointer"
-          >
+          <Table.Row key={card.id}>
             <Table.Cell title={card.id}>{card.id}</Table.Cell>
             <Table.Cell title={card.front}>{card.front}</Table.Cell>
             <Table.Cell title={card.back}>{card.back}</Table.Cell>
@@ -29,13 +25,14 @@ export function CardTable({ cards, onEdit, onDelete }) {
           </Table.Row>
         ))}
       </Table.Body>
+
       <Table.Footer>
         <Table.Row>
           <Table.HeaderCell></Table.HeaderCell>
           <Table.HeaderCell></Table.HeaderCell>
           <Table.HeaderCell></Table.HeaderCell>
           <Table.HeaderCell>
-            <Button floated="right">
+            <Button floated="right" onClick={() => onEdit()}>
               <Icon.Group>
                 <Icon name="file" />
                 <Icon corner name="add" />
@@ -45,21 +42,6 @@ export function CardTable({ cards, onEdit, onDelete }) {
           </Table.HeaderCell>
         </Table.Row>
       </Table.Footer>
-
-      {/* <Table.Footer fullWidth>
-        <Table.Row>
-          <Table.HeaderCell>Total cards: {cards.length}</Table.HeaderCell>
-          <Table.HeaderCell colSpan="10" className="add-card-cell">
-            <Button floated="right">
-              <Icon.Group>
-                <Icon name="file" />
-                <Icon corner name="add" />
-              </Icon.Group>{" "}
-              Add card
-            </Button>
-          </Table.HeaderCell>
-        </Table.Row>
-      </Table.Footer> */}
     </Table>
   );
 }

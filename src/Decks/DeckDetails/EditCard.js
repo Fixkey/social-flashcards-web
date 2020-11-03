@@ -39,7 +39,9 @@ export function EditCard({ deck, selectedCard, editCard }) {
             className="m-05"
           />
           <div className="text-align-center">
-            <Button onClick={() => editCard(front, back)}>Edit card</Button>
+            <Button onClick={() => editCard(front, back)}>
+              {selectedCard ? "Edit card" : "Create card"}
+            </Button>
           </div>
         </Form>
       </div>

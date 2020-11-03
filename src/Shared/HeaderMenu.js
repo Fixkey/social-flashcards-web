@@ -1,5 +1,6 @@
 import { useHistory, useLocation } from "react-router-dom";
 import { Input, Menu } from "semantic-ui-react";
+import { UserModal } from "./UserModal";
 
 export function HeaderMenu(props) {
   const { pathname } = useLocation();
@@ -31,11 +32,7 @@ export function HeaderMenu(props) {
         <Menu.Item>
           <Input icon="search" placeholder="Search..." />
         </Menu.Item>
-        <Menu.Item
-          name="logout"
-          active={pathname === "/logout"}
-          onClick={() => history.push("/logout")}
-        />
+        <UserModal />
       </Menu.Menu>
     </Menu>
   );
