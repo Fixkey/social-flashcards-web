@@ -3,6 +3,18 @@ import { API_URL } from "../config";
 const USERS_URL = `${API_URL}/users`;
 const DECKS_URL = `${API_URL}/decks`;
 
+async function fetchWrapper(url, method, token, body) {
+  const config = {
+    method: method ? method : "get",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : undefined,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  };
+  return await fetch(url, config);
+}
+
 export const loadAllDecks = async () => {
   const decks = await fetch(DECKS_URL).then((e) => e.json());
   console.log(decks);

@@ -1,6 +1,6 @@
 import { useHistory, useLocation } from "react-router-dom";
 import { Input, Menu } from "semantic-ui-react";
-import { UserModal } from "./UserModal";
+import { UserModal } from "./UserModal/UserModal";
 
 export function HeaderMenu(props) {
   const { pathname } = useLocation();

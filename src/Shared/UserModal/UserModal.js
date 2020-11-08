@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
 import { Button, Form, Menu, Modal } from "semantic-ui-react";
-import { UserContext } from "../user/UserContext";
-import { loginUser } from "../utils/apis";
+import { User } from "../../user/User";
+import { UserContext } from "../../user/UserContext";
+import { loginUser } from "../../utils/apis";
+import { NotLoggedIn } from "./NotLoggedIn";
 
 export function UserModal() {
-  const [token, setToken] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +14,7 @@ export function UserModal() {
   const handleSubmit = () => {
     loginUser(name, password).then(({ username, token }) => {
       console.log(username, token);
-      setToken(username, token);
+      setUser(User.loginUser(user, username, token));
     });
   };
 
@@ -21,11 +23,14 @@ export function UserModal() {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Menu.Item name={token ? "Logged in" : "Log in"}></Menu.Item>}
+      trigger={
+        <Menu.Item name={user.token ? user.username : "Log in"}></Menu.Item>
+      }
     >
-      <Modal.Header>Select a Photo</Modal.Header>
-      <Modal.Content>
-        <Form onSubmit={handleSubmit}>
+      {/* <Modal.Header>Select a Photo</Modal.Header>
+      <Modal.Content> */}
+      <NotLoggedIn />
+      {/* <Form onSubmit={handleSubmit}>
           <Form.Group>
             <Form.Input
               placeholder="Name"
@@ -42,8 +47,8 @@ export function UserModal() {
             />
             <Form.Button content="Submit" />
           </Form.Group>
-        </Form>
-        {/* <Modal.Description>
+        </Form> */}
+      {/* <Modal.Description>
           <Header>Default Profile Image</Header>
           <p>
             We've found the following gravatar image associated with your e-mail
@@ -51,10 +56,16 @@ export function UserModal() {
           </p>
           <p>Is it okay to use this photo?</p>
         </Modal.Description> */}
-      </Modal.Content>
+      {/* </Modal.Content>
       <Modal.Actions>
-        <Button color="black" onClick={() => setOpen(false)}>
-          Nope
+        <Button
+          color="black"
+          onClick={() => {
+            setUser(User.logoutUser(user));
+            setOpen(false);
+          }}
+        >
+          Log out
         </Button>
         <Button
           content="Yep, that's me"
@@ -63,7 +74,7 @@ export function UserModal() {
           onClick={() => setOpen(false)}
           positive
         />
-      </Modal.Actions>
+      </Modal.Actions> */}
     </Modal>
   );
 }
