@@ -6,9 +6,10 @@ import { UserContext } from "../user/UserContext";
 import is from "is_js";
 import {
   createProgressFromDeck,
+  getToBeReviewedProgress,
   mapProgressToQueue,
   updateProgressFromQueue,
-} from "../../utils/helpers";
+} from "./helpers";
 import { User } from "../../models/User";
 import { toast } from "react-toastify";
 import { Queue } from "./Queue";
@@ -46,7 +47,9 @@ function useHooks() {
         let progress = {};
         if (user.progress[permaLink]) {
           // calculate from progress
+          progress = getToBeReviewedProgress(user.progress[permaLink]);
         } else {
+          // fresh start
           progress = createProgressFromDeck(deck);
           setUser(User.updateProgress(user, deck.permaLink, progress));
           // setUser(User.updateProgress(user, deck.permaLink, progress));

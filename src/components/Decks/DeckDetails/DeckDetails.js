@@ -7,7 +7,7 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Button, Header, Icon, Loader } from "semantic-ui-react";
+import { Loader } from "semantic-ui-react";
 import {
   createCard,
   deleteCard,
@@ -16,6 +16,7 @@ import {
 } from "../../../utils/apis/deckApi";
 import { UPDATED_SUCCESSFULLY } from "../../../utils/strings";
 import { CardTable } from "./CardTable";
+import { DeckHeader } from "./DeckHeader";
 import { EditCard } from "./EditCard";
 
 export function DeckDetails() {
@@ -34,17 +35,7 @@ export function DeckDetails() {
   return (
     <Switch>
       <Route exact path={path}>
-        <Header as="h3" icon textAlign="center">
-          <Icon name="folder" circular />
-          <Header.Content>{deck.name}</Header.Content>
-        </Header>
-        <div style={{ textAlign: "center" }}>
-          <Button color="red">Delete Deck</Button>
-          <Button color="green" onClick={reviewDeck}>
-            Review Deck
-          </Button>
-          <Button color="blue">Share Deck</Button>
-        </div>
+        <DeckHeader name={deck.name} reviewDeck={reviewDeck} />
         <CardTable
           cards={deck.cards}
           onDelete={handleDelete}

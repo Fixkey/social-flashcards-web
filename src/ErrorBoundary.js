@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Message } from "semantic-ui-react";
 
 export class ErrorBoundary extends React.Component {
   state = { hasError: false };
@@ -16,8 +17,11 @@ export class ErrorBoundary extends React.Component {
   render() {
     return this.state.hasError ? (
       <div>
-        <div role="alert">There was a problem.</div>{" "}
-        <button onClick={this.tryAgain}>Try again?</button>
+        <Message negative>
+          <Message.Header>There was a problem</Message.Header>
+          <Button onClick={this.tryAgain}>Try again?</Button>
+        </Message>
+        {/* <div role="alert">There was a problem.</div> <button>Try again?</button> */}
       </div>
     ) : (
       this.props.children

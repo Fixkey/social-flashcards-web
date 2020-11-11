@@ -20,7 +20,6 @@ export function LoggedIn({ setOpen }) {
           Log out
         </Button>
         <Button
-          // color="black"
           onClick={() => {
             setOpen(false);
           }}
