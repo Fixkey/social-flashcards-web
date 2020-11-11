@@ -1,10 +1,12 @@
 export class User {
-  static localStorageKey = "user";
-
-  constructor(username, token, progress) {
+  constructor(username, token, progress = {}) {
     this.username = username;
     this.token = token;
     this.progress = progress;
+  }
+
+  static cloneUser(user) {
+    return new User(user.username, user.token, user.progress);
   }
 
   static loadUserFromLocalStorage() {
@@ -29,10 +31,23 @@ export class User {
   }
 
   static load() {
-    localStorage.getItem(User.localStorageKey);
+    return localStorage.getItem("user");
   }
 
   static save(user) {
-    localStorage.setItem(User.localStorageKey, JSON.stringify(user));
+    return localStorage.setItem("user", JSON.stringify(user));
+  }
+
+  static updateProgress(user, deckPermaLink, progress) {
+    const newUser = this.cloneUser(user);
+    newUser.progress[deckPermaLink] = progress;
+    return newUser;
+  }
+
+  static replaceProgress(user, progress) {
+    const newUser = this.cloneUser(user);
+    newUser.progress = progress;
+    this.save(newUser);
+    return newUser;
   }
 }

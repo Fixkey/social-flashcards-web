@@ -22,3 +22,32 @@
 .text-align-center {
   text-align: center;
 }
+
+.queue {
+  padding: 1em 3em;
+  height: 80vh;
+}
+
+.queue-stats {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.queue-card {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 70%;
+}
+
+.queue-card h2 {
+  margin-bottom: 3em;
+}
+
+.queue-card h3 {
+  margin-bottom: 3em;
+}
+
+.hidden {
+  visibility: hidden;
+}

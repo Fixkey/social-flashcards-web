@@ -1,7 +1,7 @@
 import { Route, Switch } from "react-router-dom";
-import { DeckDetails } from "./Decks/DeckDetails/DeckDetails";
-import { Decks } from "./Decks/Decks";
-import { ReviewMain } from "./Shared/ReviewMain";
+import { DeckDetails } from "./components/Decks/DeckDetails/DeckDetails";
+import { Decks } from "./components/Decks/Decks";
+import { Review } from "./components/Review/Review";
 
 export function Routes() {
   return (
@@ -9,8 +9,8 @@ export function Routes() {
       <Route exact path="/">
         Hi
       </Route>
-      <Route exact path="/review">
-        <ReviewMain />
+      <Route exact path="/review/:permaLink?">
+        <Review />
       </Route>
       <Route exact path="/decks">
         <Decks />

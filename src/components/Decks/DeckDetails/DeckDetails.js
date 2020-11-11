@@ -7,14 +7,14 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Header, Icon, Loader } from "semantic-ui-react";
+import { Button, Header, Icon, Loader } from "semantic-ui-react";
 import {
   createCard,
   deleteCard,
   editCard,
   loadDeckByPermaLink,
-} from "../../utils/apis";
-import { UPDATED_SUCCESSFULLY } from "../../utils/strings";
+} from "../../../utils/apis/deckApi";
+import { UPDATED_SUCCESSFULLY } from "../../../utils/strings";
 import { CardTable } from "./CardTable";
 import { EditCard } from "./EditCard";
 
@@ -26,6 +26,7 @@ export function DeckDetails() {
     handleEdit,
     path,
     updateCard,
+    reviewDeck,
   } = useHooks();
 
   if (!deck) return <Loader active inline="centered" />;
@@ -37,6 +38,13 @@ export function DeckDetails() {
           <Icon name="folder" circular />
           <Header.Content>{deck.name}</Header.Content>
         </Header>
+        <div style={{ textAlign: "center" }}>
+          <Button color="red">Delete Deck</Button>
+          <Button color="green" onClick={reviewDeck}>
+            Review Deck
+          </Button>
+          <Button color="blue">Share Deck</Button>
+        </div>
         <CardTable
           cards={deck.cards}
           onDelete={handleDelete}
@@ -64,7 +72,11 @@ function useHooks() {
 
   const refreshDeck = useCallback((permaLink) => {
     loadDeckByPermaLink(permaLink).then((newDeck) => {
-      setDeck(newDeck);
+      if (!newDeck.error) {
+        setDeck(newDeck.data);
+      } else {
+        toast.error("Error " + newDeck.message);
+      }
     });
   }, []);
 
@@ -74,11 +86,12 @@ function useHooks() {
 
   const handleDelete = useCallback(
     (card) => {
-      deleteCard(deck.id, card.id).then((ok) => {
-        if (ok) {
-          console.log(card);
+      deleteCard(deck.id, card.id).then((response) => {
+        if (!response.error) {
           refreshDeck(deck.permaLink);
           toast.success(`Card id ${card.id} (${card.front}) is deleted.`);
+        } else {
+          toast.error("Error " + response.message);
         }
       });
     },
@@ -99,14 +112,14 @@ function useHooks() {
         createCard(deck.id, {
           front: newFront,
           back: newBack,
-        }).then(({ deck: newDeck, error }) => {
-          // error
-          if (!error) {
-            setDeck(newDeck);
+        }).then((response) => {
+          if (!response.error) {
+            const { data: deck } = response;
+            setDeck(deck);
             toast.success("CREATED");
-            setSelectedCard(newDeck.cards[newDeck.cards.length - 1]);
+            setSelectedCard(deck.cards[deck.cards.length - 1]);
           } else {
-            toast.error(error);
+            toast.error("Error " + response.message);
           }
         });
       } else {
@@ -114,19 +127,23 @@ function useHooks() {
           ...selectedCard,
           front: newFront,
           back: newBack,
-        }).then(({ deck: newDeck, error }) => {
+        }).then((response) => {
           // error
-          if (!error) {
-            setDeck(newDeck);
+          if (!response.error) {
+            setDeck(response.data);
             toast.success(UPDATED_SUCCESSFULLY);
           } else {
-            toast.error(error);
+            toast.error("Error " + response.message);
           }
         });
       }
     },
     [selectedCard, deck]
   );
+
+  const reviewDeck = useCallback(() => {
+    history.push(`/review/${deck.permaLink}`);
+  }, [deck, history]);
 
   return {
     deck,
@@ -135,5 +152,6 @@ function useHooks() {
     handleEdit,
     path,
     updateCard,
+    reviewDeck,
   };
 }
