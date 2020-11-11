@@ -14,3 +14,9 @@ export const registerUser = async (username, password) => {
     password,
   });
 };
+
+export const fetchUsers = async (search) => {
+  return await fetchWrapper(
+    `${USERS_URL}/${search ? `?search=${search}` : ""}`
+  );
+};

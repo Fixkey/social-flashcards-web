@@ -74,7 +74,7 @@ function useHooks(queue) {
   }, [queue]);
 
   const cardsLeft = randomQueue.length;
-  const current = cardsLeft > 0 ? randomQueue[0] : null;
+  const current = cardsLeft > 0 ? randomQueue[0] : null; // TODO _.sample
   console.log(current);
   return { backShown, setBackShown, current, cardsLeft };
 }

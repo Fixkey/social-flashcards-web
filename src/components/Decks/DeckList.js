@@ -10,7 +10,7 @@ export function DeckList({ decks }) {
         <List.Item key={deck.id}>
           <List.Icon name="folder" size="large" verticalAlign="middle" />
           <List.Content
-            onClick={() => history.push(`/decks/${deck.permaLink}`)}
+            onClick={() => history.push(`/decks/id/${deck.permaLink}`)}
           >
             <List.Header as="a">{deck.name}</List.Header>
             <List.Description as="a">

@@ -1,4 +1,5 @@
 import { Route, Switch } from "react-router-dom";
+import { CreateDeck } from "./components/Decks/CreateDeck";
 import { DeckDetails } from "./components/Decks/DeckDetails/DeckDetails";
 import { Decks } from "./components/Decks/Decks";
 import { Review } from "./components/Review/Review";
@@ -15,7 +16,10 @@ export function Routes() {
       <Route exact path="/decks">
         <Decks />
       </Route>
-      <Route path="/decks/:permaLink">
+      <Route exact path="/decks/create">
+        <CreateDeck />
+      </Route>
+      <Route path="/decks/id/:permaLink">
         <DeckDetails />
       </Route>
     </Switch>
