@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   Route,
   Switch,
   useHistory,
+  useLocation,
   useParams,
   useRouteMatch,
 } from "react-router-dom";
@@ -11,6 +12,7 @@ import { Loader } from "semantic-ui-react";
 import {
   createCard,
   deleteCard,
+  deleteDeck,
   editCard,
   loadDeckByPermaLink,
 } from "../../../utils/apis/deckApi";
@@ -18,6 +20,8 @@ import { UPDATED_SUCCESSFULLY } from "../../../utils/strings";
 import { CardTable } from "./CardTable";
 import { DeckHeader } from "./DeckHeader";
 import { EditCard } from "./EditCard";
+import { UserContext } from "../../user/UserContext";
+import { isOwner } from "../../../utils/helpers";
 
 export function DeckDetails() {
   const {
@@ -28,18 +32,31 @@ export function DeckDetails() {
     path,
     updateCard,
     reviewDeck,
+    deckOwner,
+    removeDeck,
+    shareLink,
   } = useHooks();
+
+  console.log(deckOwner);
 
   if (!deck) return <Loader active inline="centered" />;
 
   return (
     <Switch>
       <Route exact path={path}>
-        <DeckHeader name={deck.name} reviewDeck={reviewDeck} />
+        <DeckHeader
+          name={deck.name}
+          privateDeck={deck.privateDeck}
+          reviewDeck={reviewDeck}
+          readOnly={!deckOwner}
+          removeDeck={removeDeck}
+          shareLink={shareLink}
+        />
         <CardTable
           cards={deck.cards}
           onDelete={handleDelete}
           onEdit={handleEdit}
+          readOnly={!deckOwner}
         />
       </Route>
       <Route path={`${path}/edit`}>
@@ -59,17 +76,27 @@ function useHooks() {
   const [selectedCard, setSelectedCard] = useState(null);
   const { permaLink } = useParams();
   const { path, url } = useRouteMatch();
+  const [user, setUser] = useContext(UserContext);
   const history = useHistory();
+  const location = useLocation();
 
-  const refreshDeck = useCallback((permaLink) => {
-    loadDeckByPermaLink(permaLink).then((newDeck) => {
-      if (!newDeck.error) {
-        setDeck(newDeck.data);
-      } else {
-        toast.error("Error " + newDeck.message);
-      }
-    });
-  }, []);
+  const deckOwner = isOwner(user, deck);
+
+  const refreshDeck = useCallback(
+    (permaLink) => {
+      loadDeckByPermaLink(permaLink + location.search).then((newDeck) => {
+        if (!newDeck.error) {
+          setDeck(newDeck.data);
+        } else {
+          toast.error("Error " + newDeck.message);
+          console.log(user);
+          history.push("/decks");
+        }
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [history, user, location]
+  );
 
   useEffect(() => {
     refreshDeck(permaLink);
@@ -133,8 +160,23 @@ function useHooks() {
   );
 
   const reviewDeck = useCallback(() => {
-    history.push(`/review/${deck.permaLink}`);
+    history.push(`/review/${deck.permaLink + location.search}`);
+  }, [deck, history, location]);
+
+  const removeDeck = useCallback(() => {
+    deleteDeck(deck.id).then((res) => {
+      if (res.error) {
+        toast.error("Error " + res.message);
+      } else {
+        history.push("/decks");
+        toast.success(`Deck ${deck.name} is deleted.`);
+      }
+    });
   }, [deck, history]);
+
+  const shareLink = deck?.privateDeck
+    ? `${document.URL}?secret=${deck?.secret}`
+    : document.URL;
 
   return {
     deck,
@@ -144,5 +186,8 @@ function useHooks() {
     path,
     updateCard,
     reviewDeck,
+    deckOwner,
+    removeDeck,
+    shareLink,
   };
 }

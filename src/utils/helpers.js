@@ -41,3 +41,12 @@ export function MyCheckbox({ name, label, register }) {
     </div>
   );
 }
+
+export function isOwner(user, deck) {
+  const { username } = user;
+
+  if (deck?.owners) {
+    return deck.owners.some((deckOwner) => username === deckOwner);
+  }
+  return false;
+}

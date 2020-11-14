@@ -12,7 +12,7 @@ export function UserModal() {
     <Modal
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
-      open={open}
+      open={!!open}
       trigger={
         <Menu.Item name={user.token ? user.username : "Log in"}></Menu.Item>
       }

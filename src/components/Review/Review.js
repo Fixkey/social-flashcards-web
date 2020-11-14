@@ -1,6 +1,6 @@
 import assert from "assert";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { loadDeckByPermaLink } from "../../utils/apis/deckApi";
 import { UserContext } from "../user/UserContext";
 import is from "is_js";
@@ -34,10 +34,11 @@ function useHooks() {
   const { permaLink } = useParams();
   const [user, setUser] = useContext(UserContext);
   const [queue, setQueue] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     if (permaLink && !queue) {
-      loadDeckByPermaLink(permaLink).then((response) => {
+      loadDeckByPermaLink(permaLink + location.search).then((response) => {
         if (response.error) {
           toast.error("Error " + response.message);
           return;
@@ -57,7 +58,7 @@ function useHooks() {
         setQueue(mapProgressToQueue(progress, deck));
       });
     }
-  }, [permaLink, setUser, setQueue, user, queue]);
+  }, [permaLink, setUser, setQueue, user, queue, location]);
 
   const answerCorrect = useCallback(
     (cardId) => {

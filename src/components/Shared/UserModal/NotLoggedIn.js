@@ -42,6 +42,7 @@ export function NotLoggedIn({ setOpen }) {
     <>
       <Modal.Header>Log In / Register</Modal.Header>
       <Modal.Content>
+        <p>Login to create and manage decks, save progress in the cloud.</p>
         <Form
           loading={loading}
           onSubmit={handleSubmit(onSubmit)}

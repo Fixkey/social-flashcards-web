@@ -1,27 +1,8 @@
 import React, { Component } from "react";
 import { toast } from "react-toastify";
-import { Button, Dropdown, Grid, Header } from "semantic-ui-react";
+import { Dropdown } from "semantic-ui-react";
 import { fetchUsers } from "../../utils/apis/userApi";
 import _ from "lodash";
-// import _ from "lodash";
-
-// const getOptions = () => [
-//   {
-//     key: "Carey Schmitt",
-//     text: "Carey Schmitt",
-//     value: "carey_schmitt",
-//   },
-//   {
-//     key: "Carolanne Walter Sr.",
-//     text: "Carolanne Walter Sr.",
-//     value: "carolanne_walter_sr",
-//   },
-//   {
-//     key: "Woodrow Zemlak",
-//     text: "Woodrow Zemlak",
-//     value: "woodrow_zemlak",
-//   },
-// ];
 
 const getOptions = (arr) =>
   arr.map((e) => ({
@@ -34,7 +15,7 @@ export class UserPicker extends Component {
   state = {
     isFetching: true,
     searchQuery: null,
-    value: [],
+    // value: [],
     options: [],
   };
 
@@ -43,7 +24,8 @@ export class UserPicker extends Component {
   }
 
   handleChange = (e, { value }) => {
-    this.setState({ value });
+    // this.setState({ value });
+    this.props.setUsers(value);
   };
 
   handleSearchChange = (e, { searchQuery }) => {
@@ -61,7 +43,8 @@ export class UserPicker extends Component {
       } else {
         console.log(response);
         const options = getOptions(
-          _.uniq([...response.data, ...this.state.value])
+          _.uniq([...response.data, ...this.props.users])
+          // _.uniq([...response.data, ...this.state.value])
         );
         console.log(options);
         this.setState({
@@ -73,7 +56,8 @@ export class UserPicker extends Component {
   };
 
   render() {
-    const { options, isFetching, value } = this.state;
+    // const { options, isFetching, value } = this.state;
+    const { options, isFetching } = this.state;
 
     return (
       <Dropdown
@@ -82,7 +66,8 @@ export class UserPicker extends Component {
         multiple
         search
         options={options}
-        value={value}
+        value={this.props.users}
+        // value={value}
         placeholder="Add Users"
         onChange={this.handleChange}
         onSearchChange={this.handleSearchChange}
