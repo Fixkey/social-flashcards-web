@@ -175,7 +175,7 @@ function useHooks() {
   }, [deck, history]);
 
   const shareLink = deck?.privateDeck
-    ? `${document.URL}?secret=${deck?.secret}`
+    ? `${document.URL.split("?")[0]}?secret=${deck?.secret}`
     : document.URL;
 
   return {

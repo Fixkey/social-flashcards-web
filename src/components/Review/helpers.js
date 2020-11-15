@@ -67,3 +67,19 @@ export function getToBeReviewedProgress(progress) {
   });
   return result;
 }
+
+export function progressLastUpdatedDate(progress) {
+  let lastAnswered = 0;
+  Object.keys(progress).forEach((key) => {
+    Object.keys(progress[key]).forEach((deckKey) => {
+      if (progress[key][deckKey].lastAnswered > lastAnswered) {
+        lastAnswered = progress[key][deckKey].lastAnswered;
+      }
+    });
+  });
+  if (lastAnswered > 0) {
+    return new Date(lastAnswered);
+  } else {
+    return null;
+  }
+}

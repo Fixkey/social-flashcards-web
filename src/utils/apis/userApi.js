@@ -20,3 +20,13 @@ export const fetchUsers = async (search) => {
     `${USERS_URL}/${search ? `?search=${search}` : ""}`
   );
 };
+
+export const fetchUserProgress = async () => {
+  return await fetchWrapper(`${USERS_URL}/progress`);
+};
+
+export const updateUserProgress = async (progress) => {
+  return await fetchWrapper(`${USERS_URL}/progress`, "put", {
+    progress: JSON.stringify(progress),
+  });
+};
