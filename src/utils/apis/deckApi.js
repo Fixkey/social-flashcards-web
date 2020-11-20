@@ -25,6 +25,14 @@ export const createDeck = async (deck) => {
   return await fetchWrapper(`${DECKS_URL}`, "post", deck);
 };
 
+export const changeOwnershipOfDeck = async (deck) => {
+  return await fetchWrapper(`${DECKS_URL}/change-ownership`, "put", deck);
+};
+
 export const deleteDeck = async (deckId) => {
   return await fetchWrapper(`${DECKS_URL}/${deckId}`, "delete");
+};
+
+export const loadDecksBySubject = async (subjectId) => {
+  return await fetchWrapper(`${DECKS_URL}/subject/${subjectId}`);
 };

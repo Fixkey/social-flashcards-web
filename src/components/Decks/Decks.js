@@ -8,7 +8,7 @@ import { DeckList } from "./DeckList";
 
 export function Decks() {
   const [decks, setDecks] = useState(null);
-  const [user, setUser] = useContext(UserContext);
+  const [user] = useContext(UserContext);
   const history = useHistory();
   useEffect(() => {
     loadAllDecks().then((response) => {

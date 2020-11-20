@@ -35,9 +35,8 @@ export function DeckDetails() {
     deckOwner,
     removeDeck,
     shareLink,
+    setDeck,
   } = useHooks();
-
-  console.log(deckOwner);
 
   if (!deck) return <Loader active inline="centered" />;
 
@@ -45,12 +44,14 @@ export function DeckDetails() {
     <Switch>
       <Route exact path={path}>
         <DeckHeader
+          deck={deck}
           name={deck.name}
           privateDeck={deck.privateDeck}
           reviewDeck={reviewDeck}
           readOnly={!deckOwner}
           removeDeck={removeDeck}
           shareLink={shareLink}
+          setDeck={setDeck}
         />
         <CardTable
           cards={deck.cards}
@@ -76,7 +77,7 @@ function useHooks() {
   const [selectedCard, setSelectedCard] = useState(null);
   const { permaLink } = useParams();
   const { path, url } = useRouteMatch();
-  const [user, setUser] = useContext(UserContext);
+  const [user] = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
 
@@ -89,7 +90,6 @@ function useHooks() {
           setDeck(newDeck.data);
         } else {
           toast.error("Error " + newDeck.message);
-          console.log(user);
           history.push("/decks");
         }
       });
@@ -126,6 +126,11 @@ function useHooks() {
 
   const updateCard = useCallback(
     (newFront, newBack) => {
+      if (newFront === "") {
+        toast.error("Front cant be empty");
+        return;
+      }
+
       if (!selectedCard) {
         createCard(deck.id, {
           front: newFront,
@@ -135,7 +140,9 @@ function useHooks() {
             const { data: deck } = response;
             setDeck(deck);
             toast.success("CREATED");
-            setSelectedCard(deck.cards[deck.cards.length - 1]);
+            setSelectedCard({});
+            setSelectedCard(null);
+            // setSelectedCard(deck.cards[deck.cards.length - 1]);
           } else {
             toast.error("Error " + response.message);
           }
@@ -189,5 +196,6 @@ function useHooks() {
     deckOwner,
     removeDeck,
     shareLink,
+    setDeck,
   };
 }

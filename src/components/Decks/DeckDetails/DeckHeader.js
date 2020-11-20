@@ -1,13 +1,16 @@
 import { useRef, useState } from "react";
 import { Button, Confirm, Header, Icon, Input, Modal } from "semantic-ui-react";
+import { DeckManageModal } from "./DeckManageModal";
 
 export function DeckHeader({
+  deck,
   name,
   removeDeck,
   reviewDeck,
   readOnly,
   shareLink,
   privateDeck,
+  setDeck,
 }) {
   const {
     deleteOpen,
@@ -71,6 +74,7 @@ export function DeckHeader({
             />
           </Modal.Content>
         </Modal>
+        {!readOnly && <DeckManageModal deck={deck} setDeck={setDeck} />}
       </div>
     </>
   );

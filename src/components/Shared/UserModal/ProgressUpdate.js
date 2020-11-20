@@ -1,5 +1,4 @@
-import is from "is_js";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   Button,
@@ -19,9 +18,7 @@ import { UserContext } from "../../user/UserContext";
 
 export function ProgressUpdate() {
   const {
-    user,
     localLastUpdate,
-    loading,
     cloudLastUpdate,
     uploadProgress,
     downloadProgress,
@@ -82,8 +79,6 @@ function useHooks() {
   const [localLastUpdate, setLocalLastUpdate] = useState(null);
   const [cloudProgress, setCloudProgress] = useState(null);
   const [cloudLastUpdate, setCloudLastUpdate] = useState(null);
-  console.log(cloudProgress);
-  console.log(cloudLastUpdate);
 
   useEffect(() => {
     setLocalLastUpdate(progressLastUpdatedDate(user.progress));
@@ -103,7 +98,7 @@ function useHooks() {
     });
   }, [user]);
 
-  const uploadProgress = useCallback(() => {
+  const uploadProgress = () => {
     updateUserProgress(user.progress).then((response) => {
       if (response.error) {
         toast.error(response.message);
@@ -112,13 +107,13 @@ function useHooks() {
         setCloudLastUpdate(progressLastUpdatedDate(user.progress));
       }
     });
-  });
+  };
 
-  const downloadProgress = useCallback(() => {
+  const downloadProgress = () => {
     setUser(User.replaceProgress(user, cloudProgress));
-  });
+  };
 
-  const clearProgress = useCallback(() => {
+  const clearProgress = () => {
     updateUserProgress({}).then((response) => {
       if (response.error) {
         toast.error(response.message);
@@ -128,7 +123,7 @@ function useHooks() {
         setUser(User.replaceProgress(user, {}));
       }
     });
-  });
+  };
 
   return {
     user,

@@ -1,8 +1,11 @@
+import is from "is_js";
 import { useHistory } from "react-router-dom";
 import { List } from "semantic-ui-react";
 
 export function DeckList({ decks }) {
   const history = useHistory();
+
+  if (is.empty(decks)) return "No decks matching criteria";
 
   return (
     <List divided relaxed>
@@ -14,7 +17,7 @@ export function DeckList({ decks }) {
           >
             <List.Header as="a">{deck.name}</List.Header>
             <List.Description as="a">
-              Card count: {deck.cards.length}
+              Card count: {deck.cardsLength || deck.cards.length}
             </List.Description>
           </List.Content>
         </List.Item>

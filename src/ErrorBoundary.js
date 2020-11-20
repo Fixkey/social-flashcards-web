@@ -6,7 +6,6 @@ export class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, info) {
     this.setState({ hasError: true });
-    console.log(`%cERROR BOUNDARY`, "color: orange");
     console.log(error);
     console.log(info);
     // reportError(error, info); TODO

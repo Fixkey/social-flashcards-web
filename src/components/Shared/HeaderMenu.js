@@ -1,9 +1,13 @@
+import { useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Input, Menu } from "semantic-ui-react";
+import { UserContext } from "../user/UserContext";
 import { UserModal } from "./UserModal/UserModal";
 
 export function HeaderMenu() {
   const { pathname } = useLocation();
+  const [user] = useContext(UserContext);
+  const loggedIn = !!user.token;
   const history = useHistory();
 
   return (
@@ -12,11 +16,6 @@ export function HeaderMenu() {
         name="home"
         active={pathname === "/"}
         onClick={() => history.push("/")}
-      />
-      <Menu.Item
-        name="subjects"
-        active={pathname === "/subjects"}
-        onClick={() => history.push("/subjects")}
       />
       <Menu.Item
         name="categories"
@@ -28,6 +27,13 @@ export function HeaderMenu() {
         active={pathname === "/decks"}
         onClick={() => history.push("/decks")}
       />
+      {loggedIn && (
+        <Menu.Item
+          name="create deck"
+          active={pathname === "/decks/create"}
+          onClick={() => history.push("/decks/create")}
+        />
+      )}
       <Menu.Menu position="right">
         <Menu.Item>
           <Input icon="search" placeholder="Search..." />

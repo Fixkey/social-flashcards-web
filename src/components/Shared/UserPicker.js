@@ -41,12 +41,10 @@ export class UserPicker extends Component {
       if (response.error) {
         toast.error(response.message);
       } else {
-        console.log(response);
         const options = getOptions(
           _.uniq([...response.data, ...this.props.users])
           // _.uniq([...response.data, ...this.state.value])
         );
-        console.log(options);
         this.setState({
           isFetching: false,
           options,

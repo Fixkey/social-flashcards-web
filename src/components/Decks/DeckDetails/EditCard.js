@@ -1,14 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Form, Header, TextArea } from "semantic-ui-react";
 
 export function EditCard({ deck, selectedCard, editCard }) {
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
 
+  const ref = useRef();
+
   useEffect(() => {
     if (selectedCard) {
       setFront(selectedCard.front);
       setBack(selectedCard.back);
+    } else {
+      setFront("");
+      setBack("");
+    }
+    if (ref.current) {
+      const cur = ref.current;
+      if (cur.ref.current) {
+        cur.ref.current.focus();
+      }
     }
   }, [selectedCard]);
 
@@ -31,6 +42,7 @@ export function EditCard({ deck, selectedCard, editCard }) {
             onChange={(e) => setFront(e.target.value)}
             placeholder="Front of the card"
             className="m-05"
+            ref={ref}
           />
           <TextArea
             value={back}

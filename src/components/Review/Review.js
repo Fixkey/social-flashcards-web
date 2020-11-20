@@ -17,7 +17,6 @@ import { Loader } from "semantic-ui-react";
 
 export const Review = () => {
   const { queue, answerCorrect, answerIncorrect } = useHooks();
-  console.log(queue);
   if (!queue) return <Loader active inline="centered" />;
   return (
     <div>
