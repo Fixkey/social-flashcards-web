@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { Input, Menu } from "semantic-ui-react";
+import { Menu } from "semantic-ui-react";
 import { UserContext } from "../user/UserContext";
 import { UserModal } from "./UserModal/UserModal";
 
@@ -35,9 +35,12 @@ export function HeaderMenu() {
         />
       )}
       <Menu.Menu position="right">
-        <Menu.Item>
-          <Input icon="search" placeholder="Search..." />
-        </Menu.Item>
+        {/* <Menu.Item>
+          <Input
+            icon="search"
+            placeholder="Search..."
+          />
+        </Menu.Item> */}
         <UserModal />
       </Menu.Menu>
     </Menu>

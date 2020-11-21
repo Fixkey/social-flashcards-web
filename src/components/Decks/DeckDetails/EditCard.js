@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useHistory, useParams, useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { Button, Form, Header, Icon, TextArea } from "semantic-ui-react";
 
 export function EditCard({ deck, selectedCard, editCard }) {
