@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Form, Header, TextArea } from "semantic-ui-react";
+import { useHistory, useParams, useRouteMatch } from "react-router-dom";
+import { Button, Form, Header, Icon, TextArea } from "semantic-ui-react";
 
 export function EditCard({ deck, selectedCard, editCard }) {
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
+  const history = useHistory();
+  const { url } = useRouteMatch();
 
   const ref = useRef();
 
@@ -25,6 +28,14 @@ export function EditCard({ deck, selectedCard, editCard }) {
 
   return (
     <>
+      <Button
+        onClick={() => {
+          history.push(url.split("/edit")[0]);
+        }}
+        className="back-button"
+      >
+        <Icon name="arrow left" />
+      </Button>
       <Header as="h3" icon textAlign="center">
         <Header.Content>{deck.name}</Header.Content>
       </Header>
@@ -40,19 +51,28 @@ export function EditCard({ deck, selectedCard, editCard }) {
           <TextArea
             value={front}
             onChange={(e) => setFront(e.target.value)}
-            placeholder="Front of the card"
+            placeholder="Front of the card (question)"
             className="m-05"
             ref={ref}
           />
           <TextArea
             value={back}
             onChange={(e) => setBack(e.target.value)}
-            placeholder="Back of the card"
+            placeholder="Back of the card (answer)"
             className="m-05"
           />
           <div className="text-align-center">
-            <Button onClick={() => editCard(front, back)}>
+            <Button primary onClick={() => editCard(front, back)}>
               {selectedCard ? "Edit card" : "Create card"}
+            </Button>
+            <Button
+              onClick={() => {
+                setFront(back);
+                setBack(front);
+              }}
+              className="reverse-card"
+            >
+              <Icon name="retweet" />
             </Button>
           </div>
         </Form>

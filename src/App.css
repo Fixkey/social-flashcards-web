@@ -111,3 +111,17 @@
 .subject {
   background: yellowgreen;
 }
+
+.reverse-card {
+  position: absolute;
+  right: 0;
+  background: none !important;
+  width: 0;
+}
+
+.back-button {
+  position: absolute;
+  left: 0;
+  background: none !important;
+  width: 0;
+}

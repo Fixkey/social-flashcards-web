@@ -35,7 +35,7 @@ export function Subjects() {
       if (response.error) {
         toast.error("Error " + response.message);
       } else {
-        setSubjects(response.data);
+        setSubjects(response.data.sort((a, b) => (a.name > b.name ? 1 : -1)));
       }
     });
   }, [category]);

@@ -1,6 +1,6 @@
 import assert from "assert";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { loadDeckByPermaLink } from "../../utils/apis/deckApi";
 import { UserContext } from "../user/UserContext";
 import is from "is_js";
@@ -13,13 +13,28 @@ import {
 import { User } from "../../models/User";
 import { toast } from "react-toastify";
 import { Queue } from "./Queue";
-import { Loader } from "semantic-ui-react";
+import { Button, Icon, Loader } from "semantic-ui-react";
 
 export const Review = () => {
-  const { queue, answerCorrect, answerIncorrect } = useHooks();
+  const {
+    queue,
+    answerCorrect,
+    answerIncorrect,
+    permaLink,
+    history,
+  } = useHooks();
+
   if (!queue) return <Loader active inline="centered" />;
   return (
     <div>
+      <Button
+        onClick={() => {
+          history.push(`/decks/id/${permaLink}`);
+        }}
+        className="back-button"
+      >
+        <Icon name="arrow left" />
+      </Button>
       <Queue
         queue={queue}
         answerCorrect={answerCorrect}
@@ -34,6 +49,7 @@ function useHooks() {
   const [user, setUser] = useContext(UserContext);
   const [queue, setQueue] = useState(null);
   const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     if (permaLink && !queue) {
@@ -95,5 +111,5 @@ function useHooks() {
     [queue, setQueue]
   );
 
-  return { queue, answerCorrect, answerIncorrect };
+  return { queue, answerCorrect, answerIncorrect, permaLink, history };
 }

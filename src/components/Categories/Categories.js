@@ -24,7 +24,7 @@ export function Categories() {
       if (response.error) {
         toast.error("Error " + response.message);
       } else {
-        setCategories(response.data);
+        setCategories(response.data.sort());
       }
     });
   }, []);

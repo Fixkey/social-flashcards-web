@@ -155,10 +155,9 @@ function useSubject(category) {
   const [subjectOptions, setSubjectOptions] = useState(null);
 
   useEffect(() => {
-    if (!category) {
-      setSubjectValue(null);
-      setSubjectOptions(null);
-    } else {
+    setSubjectValue(null);
+    setSubjectOptions(null);
+    if (category) {
       fetchSubjects(category).then((response) => {
         if (response.error) {
           toast.error("Error " + response.message);
@@ -179,7 +178,7 @@ function useSubject(category) {
 function getSubjectOptions(arr) {
   return arr.map((e) => ({
     key: e.id,
-    text: e.name,
+    text: `${e.name[0].toUpperCase()}${e.name.slice(1)}`,
     value: e.id,
   }));
 }
@@ -187,7 +186,7 @@ function getSubjectOptions(arr) {
 function getCategoryOptions(arr) {
   return arr.map((e) => ({
     key: e,
-    text: e,
+    text: `${e[0].toUpperCase()}${e.slice(1)}`,
     value: e,
   }));
 }

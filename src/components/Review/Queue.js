@@ -7,7 +7,11 @@ export function Queue({ queue, answerCorrect, answerIncorrect }) {
   const { backShown, setBackShown, cardsLeft, current } = useHooks(queue);
 
   if (cardsLeft === 0) {
-    return "No more reviews!";
+    return (
+      <Header as="h2" textAlign="center">
+        No more reviews!
+      </Header>
+    );
   }
 
   return (
@@ -31,7 +35,7 @@ export function Queue({ queue, answerCorrect, answerIncorrect }) {
         </Header>
         <div style={{ display: "flex", justifyContent: "center" }}>
           {backShown ? (
-            <div>
+            <div style={{ display: "flex" }}>
               <Button
                 size="large"
                 primary
