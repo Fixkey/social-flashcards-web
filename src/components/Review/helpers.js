@@ -68,6 +68,63 @@ export function getToBeReviewedProgress(progress) {
   return result;
 }
 
+export function getNextReviewTimeHours(progress) {
+  assert(is.object(progress), "Must be object");
+  const levels = Object.keys(LEVELS_TIME);
+  // const result = {};
+  let nextReview = null;
+  Object.keys(progress).forEach((cardId) => {
+    const level = progress[cardId].level;
+    const lastAnswered = progress[cardId].lastAnswered;
+    if (!lastAnswered) {
+      nextReview = 0;
+    } else if (level === levels[levels.length - 1]) {
+      // nothing
+    } else {
+      const levelTime = LEVELS_TIME[level];
+      const now = new Date();
+      const lastAnsweredDate = new Date(lastAnswered);
+      const review = lastAnsweredDate.setHours(
+        lastAnsweredDate.getHours() + levelTime
+      );
+      const diff = review - now;
+      if (diff > 0) {
+        if (nextReview === null || diff < nextReview) {
+          nextReview = diff;
+        }
+      } else {
+        nextReview = 0;
+      }
+
+      // if (now.setHours(now.getHours() - levelTime) > lastAnswered) {
+      //   result[cardId] = { ...progress[cardId] };
+      // }
+    }
+  });
+  return nextReview;
+}
+
+export function parseDate(date) {
+  let delta = date / 1000;
+
+  // calculate (and subtract) whole days
+  const days = Math.floor(delta / 86400);
+  delta -= days * 86400;
+
+  // calculate (and subtract) whole hours
+  const hours = Math.floor(delta / 3600) % 24;
+  delta -= hours * 3600;
+
+  // calculate (and subtract) whole minutes
+  const minutes = Math.floor(delta / 60) % 60;
+  delta -= minutes * 60;
+  return {
+    days,
+    hours,
+    minutes,
+  };
+}
+
 export function progressLastUpdatedDate(progress) {
   let lastAnswered = 0;
   Object.keys(progress).forEach((key) => {

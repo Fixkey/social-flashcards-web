@@ -87,7 +87,7 @@ export function NotLoggedIn({ setOpen }) {
           {serverMessage && (
             <Message error header="Action Forbidden" content={serverMessage} />
           )}
-          <Button type="submit">Log In</Button>
+          <Button type="submit">Log In / Register</Button>
         </Form>
       </Modal.Content>
       <Modal.Actions>

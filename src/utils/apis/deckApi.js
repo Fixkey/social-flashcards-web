@@ -36,3 +36,7 @@ export const deleteDeck = async (deckId) => {
 export const loadDecksBySubject = async (subjectId) => {
   return await fetchWrapper(`${DECKS_URL}/subject/${subjectId}`);
 };
+
+export const enrichDecksByPermalinks = async (permaLinks) => {
+  return await fetchWrapper(`${DECKS_URL}/enrich`, "post", permaLinks);
+};

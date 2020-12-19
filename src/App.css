@@ -78,7 +78,7 @@
 }
 
 .category {
-  background: tomato;
+  background: #d37815;
   padding: 5px;
   margin: 10px;
   width: 210px;
@@ -97,7 +97,7 @@
 
 .category:hover {
   cursor: pointer;
-  background: rgb(255, 121, 97);
+  background: #f58e21;
 }
 
 .category p {
@@ -109,7 +109,11 @@
 }
 
 .subject {
-  background: yellowgreen;
+  background: #cad315;
+}
+
+.subject:hover {
+  background: #d0da17;
 }
 
 .reverse-card {
